@@ -32,8 +32,39 @@ function addNewClient(){
     var data = {};
     var inputs = document.forms["addNewForm"].getElementsByTagName("input");
     for (let i=0; i<inputs.length; i++){
-        console.log(inputs[i] + inputs[i].value);
+        data[inputs[i].id.slice(3,)] = inputs.value;
+        console.log(inputs[i].id.slice(3,));
     }
+    var select = document.getElementById("AC_pf");
+    console.log(select.value);
+    data["pf"] = select.value;
+
+        $.ajax({
+        url: "/dashboard/addClient/",
+        type: "POST",
+        dataType: "json",
+        data: JSON.stringify(data),
+        headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"),  // don't forget to include the 'getCookie' function
+            },
+        success: (data) => {
+            if (data["success"] == true){
+            alert("Added New client");
+            }
+            else {
+            alert("Failed to add client");
+            }
+            resetAddForm();
+        },
+        error: (error) => {
+                console.log("ERROR!!!!")
+                console.log("error = " + error);
+            }
+
+        });
+}
+
 }
 
 /*
@@ -132,9 +163,13 @@ function editClient(){
                 "X-CSRFToken": getCookie("csrftoken"),  // don't forget to include the 'getCookie' function
             },
         success: (data) => {
-
-
-
+            if (data["success"] == true){
+                alert("Updated Client");
+            }
+            else {
+                alert("Failed to Update Client");
+            }
+            resetEditForm();
         },
         error: (error) => {
                 console.log("ERROR!!!!")
