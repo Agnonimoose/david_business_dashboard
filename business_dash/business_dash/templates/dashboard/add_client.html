@@ -1,0 +1,243 @@
+{% extends "base/base.html" %}
+{% block head %}
+{% load static %}
+<link href="{% static 'css/add_client.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-8">
+        {% csrf_token %}
+        <ul class="nav nav-pills nav-fill" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-toggle="tab" aria-current="page" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#Add">Add +
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-toggle="tab" role="tab" data-bs-toggle="tab" data-bs-target="#Search">
+                    Search
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-toggle="tab" role="tab" data-bs-toggle="tab" data-bs-target="#Edit">Edit
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="Add" class="tab-pane fade in active show" role="tabpanel">
+                <h3 style="margin-bottom:20px;">Add New Client</h3>
+                <form id="addNewForm">
+                    <div class="input-group">
+                        <span class="input-group-text">Client ID</span>
+                        <input id="AC_uid" type="text" aria-label="Client ID" class="form-control" required readonly
+                               value="">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">First and last name</span>
+                        <input id="AC_firstname" type="text" aria-label="First name" class="form-control" required>
+                        <input id="AC_lastname" type="text" aria-label="Last name" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 1</span>
+                        <input id="AC_address1" type="text" aria-label="Address Line 1" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 2</span>
+                        <input id="AC_address2" type="text" aria-label="Address Line 2" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 3</span>
+                        <input id="AC_address3" type="text" aria-label="Address Line 3" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Email</span>
+                        <input id="AC_email" type="email" aria-label="Email" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Driving Licence No.</span>
+                        <input id="AC_drivingno" type="text" aria-label="Driving Licence No." class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Course</span>
+                        <input id="AC_course" type="text" aria-label="Course" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Medical Date</span>
+                        <input id="AC_medicaldate" type="date" aria-label="Medical Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Theory Date</span>
+                        <input id="AC_theorydate" type="date" aria-label="Theory Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Payment Terms</span>
+                        <input id="AC_paymentterms" type="text" aria-label="Payment Terms" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Payment Date</span>
+                        <input id="AC_paymentdate" type="date" aria-label="Payment Date" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Deposit</span>
+                        <span class="input-group-text" style="width:50px;">£</span>
+                        <input id="AC_deposit" type="number" class="form-control"
+                               aria-label="Amount (to the nearest Pound)">
+                        <span class="input-group-text">.00</span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-text">Start Date</span>
+                        <input id="AC_startdate" type="date" aria-label="Start Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Test Date</span>
+                        <input id="AC_testdate" type="date" aria-label="Test Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Pass/Fail</span>
+                        <input id="AC_pf" type="text" aria-label="Pass/Fail" class="form-control" readonly
+                               value="Not Taken">
+                    </div>
+                    <div class="row" style="margin-top:15px; margin-bottom:15px;">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-success" type="button" onclick="addNewClient();"><i
+                                    class="fa fa-check fa-lg"></i> Submit
+                            </button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-danger" type="button" onclick="resetAddForm();"><i
+                                    class="fa fa-trash-o fa-lg"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="Search" class="tab-pane fade" role="tabpanel">
+                <h3 style="margin-bottom:20px;">Search Client</h3>
+                <p>View an Existing Clients Details</p>
+                <div class="input-group">
+                    <input placeholder="Filter Wallet Addresses ...." type="search" id="filterWallets"
+                           class="form-control"
+                           style="max-width: 350px;"/>
+                    <button class="btn btn-primary walletSearch" type="button" onclick="findWallet();">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="Edit" class="tab-pane fade" role="tabpanel">
+                <h3 style="margin-bottom:20px;">Edit Client</h3>
+                <p>Find and Edit A Clients Details</p>
+                <div class="input-group">
+                    <input placeholder="Search By Client ID ...." type="search" id="clientByIDBar" class="form-control"
+                           style="max-width: 350px;"/>
+                    <button class="btn btn-primary walletSearch" type="button" onclick="findClient();">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <form id="editForm">
+                    <div class="input-group">
+                        <span class="input-group-text">Client ID</span>
+                        <input id="EC_uid" type="text" aria-label="Client ID" class="form-control" required readonly
+                               value="">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">First and last name</span>
+                        <input id="EC_firstname" type="text" aria-label="First name" class="form-control" required>
+                        <input id="EC_lastname" type="text" aria-label="Last name" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 1</span>
+                        <input id="EC_address1" type="text" aria-label="Address Line 1" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 2</span>
+                        <input id="EC_address2" type="text" aria-label="Address Line 2" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Address Line 3</span>
+                        <input id="EC_address3" type="text" aria-label="Address Line 3" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Email</span>
+                        <input id="EC_email" type="email" aria-label="Email" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Driving Licence No.</span>
+                        <input id="EC_drivingno" type="text" aria-label="Driving Licence No." class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Course</span>
+                        <input id="EC_course" type="text" aria-label="Course" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Medical Date</span>
+                        <input id="EC_medicaldate" type="date" aria-label="Medical Date" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Theory Date</span>
+                        <input id="EC_theorydate" type="date" aria-label="Theory Date" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Payment Terms</span>
+                        <input id="EC_paymentterms" type="text" aria-label="Payment Terms" class="form-control"
+                               required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Payment Date</span>
+                        <input id="EC_paymentdate" type="date" aria-label="Payment Date" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Deposit</span>
+                        <span class="input-group-text" style="width:50px;">£</span>
+                        <input id="EC_deposit" type="number" class="form-control"
+                               aria-label="Amount (to the nearest Pound)">
+                        <span class="input-group-text">.00</span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-text">Start Date</span>
+                        <input id="EC_startdate" type="date" aria-label="Start Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Test Date</span>
+                        <input id="EC_testdate" type="date" aria-label="Test Date" class="form-control" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Pass/Fail</span>
+                        <select id="EC_pf" class="form-select" aria-label="Pass/Fail">
+                          <option selected value="Not Taken">Not Taken</option>
+                          <option value="Passed">Passed</option>
+                          <option value="Failed">Failed</option>
+                        </select>
+                    </div>
+                    <div class="row" style="margin-top:15px; margin-bottom:15px;">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-success" type="button" onclick="editClient();"><i
+                                    class="fa fa-check fa-lg"></i> Submit
+                            </button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-danger" type="button" onclick="resetEditForm();"><i
+                                    class="fa fa-trash-o fa-lg"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="{% static 'js/add_client.js' %}"></script>
+{% endblock %}
